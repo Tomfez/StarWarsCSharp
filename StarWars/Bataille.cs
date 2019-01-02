@@ -5,18 +5,19 @@ namespace StarWars
 {
     class Bataille
     {
-        private List<Soldat> RebellesList;
-        private List<Soldat> EmpireList;
+        private readonly List<Soldat> RebellesList;
+        private readonly List<Soldat> EmpireList;
         private List<Soldat> listeSoldats;
-        private Camp enumFavori;
+        private readonly Camp enumFavori;
         Random rnd = new Random();
+        Soldat hero;
 
         public Bataille(List<Soldat> rebellesList, List<Soldat> empireList)
         {
             this.RebellesList = rebellesList;
             this.EmpireList = empireList;
 
-            string favori = getFavori(rebellesList, empireList);
+            string favori = GetFavori(rebellesList, empireList);
 
             listeSoldats = new List<Soldat>();
             listeSoldats.AddRange(rebellesList);
@@ -24,13 +25,15 @@ namespace StarWars
 
             if (Enum.TryParse(favori, out enumFavori) && enumFavori == Camp.Empire)
             {
-                Console.WriteLine("L'empire commence la bataille!");
-                empireList[1].Attaquer(rebellesList[1]);
+                hero = PickHero(empireList);
+                Console.WriteLine($"L'empire commence la bataille et le soldat {hero.Matricule} est le héros ! \r\n");
+                empireList[0].Attaquer(rebellesList[0]);
             }
             else
             {
-                Console.WriteLine("Les rebelles commencent la bataille!");
-                rebellesList[1].Attaquer(empireList[1]);
+                hero = PickHero(rebellesList);
+                Console.WriteLine($"Les rebelles commencent la bataille et le rebelle {hero.Matricule} est le favori ! \r\n");
+                rebellesList[0].Attaquer(empireList[0]);
             }
 
             do
@@ -42,13 +45,13 @@ namespace StarWars
                 {
                     empireList.Remove(soldatEmpire);
                 }
-                //listeSoldats[rnd.Next(0, 100)].Attaquer(listeSoldats[rnd.Next(0, 100)]);
+                listeSoldats[rnd.Next(0, 100)].Attaquer(listeSoldats[rnd.Next(0, 100)]);
             } while (empireList.Count > 0);
 
             Console.WriteLine("Les rebelles ont gagné");
         }
 
-        public string getFavori(List<Soldat> rebellesList, List<Soldat> empireList)
+        public string GetFavori(List<Soldat> rebellesList, List<Soldat> empireList)
         {
             int scoreRebelles = 0;
             int scoreEmpire = 0;
@@ -69,6 +72,24 @@ namespace StarWars
             }
 
             return "Empire";
+        }
+
+        public Soldat PickHero(List<Soldat> soldats)
+        {
+            if (soldats.Count == 0)
+            {
+                throw new InvalidOperationException("Empty list");
+            }
+
+            foreach (Soldat soldat in soldats)
+            {
+                if (soldat.Degats + soldat.Sante > 0)
+                {
+                    hero = soldat;
+                }
+            }
+
+            return hero;
         }
     }
 }

@@ -24,28 +24,30 @@ namespace StarWars
             {
                 Console.WriteLine("Traitor!");
                 Console.WriteLine($"Le soldat {Matricule} attaque le rebelle {ennemi.Matricule} et lui inflige {Degats} de dégats.");
+                Console.ResetColor();
             }
             else
             {
                 Console.WriteLine("Pour la princesse Organa!");
                 Console.WriteLine($"Le rebelle {Matricule} attaque le soldat {ennemi.Matricule} et lui inflige {Degats} de dégats.");
+                Console.ResetColor();
             }
 
             ennemi.Sante -= Degats;
 
-            if(ennemi.IsDead(ennemi.Sante))
+            if (ennemi.IsDead(ennemi.Sante))
             {
-                Console.WriteLine("Le soldat ennemi est mort");
+                Console.WriteLine("Le soldat ennemi est mort \r\n");
             }
             else
             {
-                Console.WriteLine($"Il reste {ennemi.Sante} de santé au soldat ennemi.");
+                Console.WriteLine($"Il reste {ennemi.Sante} de santé au soldat ennemi. \r\n");
             }
         }
 
         public bool IsDead(int sante)
         {
-            if(sante <= 0)
+            if (sante <= 0)
             {
                 return true;
             }

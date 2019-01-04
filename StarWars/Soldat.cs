@@ -20,6 +20,12 @@ namespace StarWars
 
         public void Attaquer(Soldat ennemi)
         {
+            // Si du même camp, on ne fait rien
+            if(Camp == ennemi.Camp)
+            {
+                return;
+            }
+
             if (Camp == Camp.Empire)
             {
                 Console.WriteLine("Traitor!");
